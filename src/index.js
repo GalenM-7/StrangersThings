@@ -10,22 +10,22 @@ const App = () => {
   let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b"
 
   useEffect(() => {
-    const getPosts = async () => {
+    const setPosts = async () => {
       try {
         const result = await fetch(`${url}/posts`);
         console.log(result)
         const resultParsed = await result.json();
-        console.log(resultParsed);
-        
+        console.log(resultParsed.data.posts);
+        getPosts(resultParsed.data.posts)
       } catch (error) {
         console.log(error)
       }
     }
-    getPosts()
+    setPosts()
   }, [])
   return <div>
             < Header />
-            < Posts/>
+            < Posts posts = { posts } />
             < Messages />
             < Footer />
           </div>;

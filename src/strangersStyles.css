@@ -1,5 +1,17 @@
-.backgroundRed {
-   background-color: red;
-   height: 20vw;
+.backgroundHeader {
+   background-image: linear-gradient(to right,lightgray, gray);
+   height: 5vw;
    width: 100%; 
+}
+
+.mainSection {
+
+}
+
+.messagePanel {
+
+}
+
+.postsPanel {
+   width: 60%
 }
