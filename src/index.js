@@ -6,7 +6,11 @@ import { Header, Messages, Posts, Footer} from "./components";
 import "./strangersStyles.css";
 
 const App = () => {
-  const [ posts, getPosts ] = useState([])
+  const [ posts, getPosts ] = useState([]);
+  const [ messages, getMessages ] =  useState([]);
+  const [ users, getUsers ] = useState([]);
+  const [ currentUser, getCurrentUser ] = useState({});
+  const [ loggedIn, getLoggedIn ] = useState(false);
   let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b"
 
   useEffect(() => {
@@ -24,9 +28,9 @@ const App = () => {
     setPosts()
   }, [])
   return <div>
-            < Header />
+            < Header loggedIn = { loggedIn } getLoggedIn = { getLoggedIn } currentUser = { currentUser } />
             < Posts posts = { posts } />
-            < Messages />
+            < Messages messages = { messages } getMessages = { getMessages }/>
             < Footer />
           </div>;
 };
