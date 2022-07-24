@@ -1,38 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const HeaderButtons = ({ loggedIn, getLoggedIn, currentUser }) => {
+const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
 
-     let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b"
+    let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
 
-    async function register(username, password) {
-        fetch(`${url}/users/register`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: {
-                    username: username,
-                    password: password
-                }
-            })
-        }
-        )
-    }
-    
+    const [ password, setPassword ] = useState("");
+    const [ username, setUsername ] = useState("");
+
     function getButtons() {
         if ( loggedIn === true) {
             return (
-                <div>
-                    {currentUser.username} 
-                    <button> Logout </button>
-                </div>
+                <section className="headerSection">
+                    <div className="backgroundHeader">Stranger's Things </div>
+                    <div>
+                        <p className="userLabel">{currentUser.username}</p>
+                        <button> Logout </button>
+                    </div>
+                </section>
             )
         } else {
             return (
-                <div>
-                    <button> Login </button>
-                </div>
+                <section className="headerSection">
+                    <div className="logo">Stranger's Things </div>
+                    <div className="formContainer">
+                          <form className="formLogin" onSubmit={ async (event) => {
+                            event.preventDefault();
+                            try {
+                                console.log(username);
+                                console.log(password);
+                                    const user = await fetch(`${url}/users/login`,{
+                                        method: "POST",
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            user: {
+                                                username: username,
+                                                password: password
+                                            }
+                                        })
+                                    });
+                                console.log(user);
+                                const getUserConverted = await user.json();
+                                console.log("this is getUserConverted");
+                                console.log(getUserConverted);
+                                setCurrentUser({username: username, password: password});
+                                setLoggedIn(true)
+                            } catch(error) {
+                                console.log(error)
+                            }
+                          }}>
+                            <div>
+                                <label> Username </label>
+                                <input
+                                    className='formLoginInput'
+                                    id="username"
+                                    type="text"
+                                    placeholder="username"
+                                    value={username}
+                                    onChange={(event) => {setUsername(event.target.value)}} 
+                                />
+                            </div>
+                          
+                          <div>
+                              <label> Password </label>
+                                <input 
+                                    id="password"
+                                    type="text"
+                                    placeholder="password"
+                                    value={password}
+                                    onChange={(event) => {setPassword(event.target.value)}}
+                                />
+                                <br />
+                          </div>
+                            <button> Login </button>
+                        </form>
+                    </div>
+                      
+            </section>
             )
         }
     }
@@ -45,12 +90,6 @@ const HeaderButtons = ({ loggedIn, getLoggedIn, currentUser }) => {
     )
 }
 
-const Header = ({ loggedIn, getLoggedIn }) => {
 
-     
-    return (
-        <div className="backgroundHeader">Stranger's Things </div>
-    )
-}
 
 export default Header

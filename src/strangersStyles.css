@@ -1,17 +1,54 @@
-.backgroundHeader {
-   background-image: linear-gradient(to right,lightgray, gray);
+.headerSection {
+   background-image: linear-gradient(to right, lightgray, white);
+   display:flex;
+   flex-direction: row;
+   justify-content: space-between;
    height: 5vw;
    width: 100%; 
 }
 
 .mainSection {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
 
 }
 
-.messagePanel {
+.formContainer {
+   width: 65%;
+   margin-top: 1vw;
+}
+
+.registrationPanel {
+   width: 25%;
+}
+
+.formLogin {
+   display:flex;
+   flex-direction: row;
+   justify-content: space-around;
 
 }
 
-.postsPanel {
-   width: 60%
+.postsPanelInitial {
+   width: 70%
+}
+
+.logo {
+   margin-top: 1vw;
+   margin-left: 1vw;
+}
+
+.loginInput {
+  margin-right: 50px;
+}
+
+.loginLabel {
+   color:white;
+  margin-right: 50px;
+}
+
+.userLabel {
+   display: inline-block;
+   margin-right: 1vw;
 }
