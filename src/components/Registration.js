@@ -6,26 +6,10 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
 
      const [ password, setPassword ] = useState("");
      const [ username, setUsername ] = useState("");
-
-    async function register(username, password) {
-        fetch(`${url}/users/register`, {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                user: {
-                    username: username,
-                    password: password
-                }
-            })
-        }
-        )
-    }
     
     return (
         <div className="registrationPanel">
-            <h1>Register Here </h1><br /><h1>to Create Posts</h1> <br /><h1>and Send Messages.</h1>
+            <h1>Register Here </h1>
             <form onSubmit={async ( event ) => {
                 event.preventDefault();
                 try {

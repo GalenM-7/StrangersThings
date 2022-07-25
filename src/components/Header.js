@@ -45,7 +45,10 @@ const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
                                 console.log("this is getUserConverted");
                                 console.log(getUserConverted);
                                 setCurrentUser({username: username, password: password});
-                                setLoggedIn(true)
+                                setLoggedIn(true);
+                                const { data } = getUserConverted;
+                                console.log("token")
+                                localStorage.setItem( "token" , data.token)
                             } catch(error) {
                                 console.log(error)
                             }

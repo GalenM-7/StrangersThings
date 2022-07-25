@@ -7,6 +7,8 @@ import "./strangersStyles.css";
 
 const App = () => {
   const [ posts, setPosts ] = useState([]);
+  const [ filteredPosts, setFilteredPosts ] = useState([]);
+  const [ filter, setFilter ] = useState(false)
   const [ messages, setMessages ] =  useState([]);
   const [ users, setUsers ] = useState([]);
   const [ currentUser, setCurrentUser ] = useState({});
@@ -31,8 +33,35 @@ const App = () => {
   return <div>
             < Header loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}/>
             <section className="mainSection">
-              < Posts posts = { posts } loggedIn = { loggedIn }/>
-              < Registration loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser} />
+              < Posts 
+                  posts = { posts } 
+                  loggedIn = { loggedIn } 
+                  setPosts = { setPosts }
+                  setFilteredPosts = { setFilteredPosts }
+                  filteredPosts = { filteredPosts }
+                  filter = { filter }
+                  setFilter = { setFilter }/>
+              {
+                loggedIn ? null : 
+                < Registration 
+                  loggedIn = { loggedIn } 
+                  setLoggedIn = { setLoggedIn } 
+                  currentUser = { currentUser } 
+                  setCurrentUser = {setCurrentUser}
+                  />
+              }
+              {
+                loggedIn ?   
+                < Messages 
+                  loggedIn = { loggedIn } 
+                  setLoggedIn = { setLoggedIn } 
+                  currentUser = { currentUser } 
+                  setCurrentUser = {setCurrentUser}
+                  /> 
+                  : null 
+              
+              }
+          
             </section>
            
             < Footer />
