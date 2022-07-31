@@ -36,7 +36,7 @@ const Posts = ({posts, setPosts, filteredPosts, setFilteredPosts, filter, setFil
                     filterPosts()
                 }
             }>
-                <h1> sort by: </h1>
+                <h2> sort by: </h2>
                     <label>Author</label>
                     <input
                         id="author"

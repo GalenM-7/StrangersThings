@@ -1,29 +1,16 @@
 import React, { useState } from 'react';
 
-const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
+const Login = ({ loggedIn, currentUser, setLoggedIn, setCurrentUser }) => {
 
-    let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
+      let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
 
-    const [ password, setPassword ] = useState("");
-    const [ username, setUsername ] = useState("");
-
-    function getButtons() {
-        if ( loggedIn === true) {
+     const [ password, setPassword ] = useState("");
+     const [ username, setUsername ] = useState("");
+  
             return (
-                <section className="headerSection">
-                    <div className="backgroundHeader">Stranger's Things </div>
-                    <div>
-                        <p className="userLabel">{currentUser.username}</p>
-                        <button> Logout </button>
-                    </div>
-                </section>
-            )
-        } else {
-            return (
-                <section className="headerSection">
-                    <div className="logo">Stranger's Things </div>
-                    <div className="formContainer">
-                          <form className="formLogin" onSubmit={ async (event) => {
+                    <div className="loginContainer">
+                        <h1>Already Registered, login below</h1>
+                          <form onSubmit={ async (event) => {
                             event.preventDefault();
                             try {
                                 console.log(username);
@@ -41,11 +28,14 @@ const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
                                         })
                                     });
                                 console.log(user);
+                                window.alert("try block successful")
                                 const getUserConverted = await user.json();
                                 console.log("this is getUserConverted");
                                 console.log(getUserConverted);
                                 setCurrentUser({username: username, password: password});
                                 setLoggedIn(true);
+                                setUsername("");
+                                setPassword("");
                                 const { data } = getUserConverted;
                                 console.log("token")
                                 localStorage.setItem( "token" , data.token)
@@ -65,7 +55,7 @@ const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
                                 />
                             </div>
                           
-                          <div>
+                          <div className="passwordDiv">
                               <label> Password </label>
                                 <input 
                                     id="password"
@@ -76,23 +66,14 @@ const Header = ({ loggedIn, setLoggedIn, currentUser, setCurrentUser }) => {
                                 />
                                 <br />
                           </div>
-                            <button> Login </button>
+                          <div className="buttonContainer">
+                            <button className="homeButtonsR"> Login </button>
+                          </div>
                         </form>
                     </div>
-                      
-            </section>
             )
-        }
-    }
- 
-    return (
-        <div>
-            {getButtons()}
-        </div>
-        
-    )
 }
 
 
 
-export default Header
+export default Login

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
-import { Header, Messages, Posts, Footer, Registration } from "./components";
+import { Login, Messages, Posts, Footer, Registration, Homepage, TopBarUser } from "./components";
 import "./strangersStyles.css";
 
 const App = () => {
@@ -31,9 +32,40 @@ const App = () => {
     getPosts()
   }, [])
   return <div>
-            < Header loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}/>
+            {/* < Header loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}></Header> */}
+           
+            
             <section className="mainSection">
-              < Posts 
+           
+              <BrowserRouter>
+                <section className="headerSection">
+                  <div className="logo">Stranger's Things </div>
+                  <div className="linksContainer">
+                    <div className="linksInnerContainer">
+                      <Link to="/" className="link">Login/Registration</Link>
+                      <Link to="/posts" className="link">Posts</Link>
+                      <Link to="/profile" className="link">Profile</Link>
+                    </div>
+                  </div>
+               
+                </section>
+               <TopBarUser loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser.username } setCurrentUser = {setCurrentUser}/>
+
+                <Routes>
+                 <Route path="/" element={<Homepage loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser.username } setCurrentUser = {setCurrentUser}/>} />
+                  <Route path="/posts" element={< Posts 
+                      posts = { posts } 
+                      loggedIn = { loggedIn } 
+                      setPosts = { setPosts }
+                      setFilteredPosts = { setFilteredPosts }
+                      filteredPosts = { filteredPosts }
+                      filter = { filter }
+                      setFilter = { setFilter }/>} />
+                   <Route path="/profile" element={<Homepage loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}/>} />
+                </Routes>
+              </BrowserRouter>
+              
+              {/* < Posts 
                   posts = { posts } 
                   loggedIn = { loggedIn } 
                   setPosts = { setPosts }
@@ -60,7 +92,7 @@ const App = () => {
                   /> 
                   : null 
               
-              }
+              } */}
           
             </section>
            

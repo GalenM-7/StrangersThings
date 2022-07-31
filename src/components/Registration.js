@@ -8,8 +8,8 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
      const [ username, setUsername ] = useState("");
     
     return (
-        <div className="registrationPanel">
-            <h1>Register Here </h1>
+        <div className="registrationContainer">
+            <h1>Register Here to add posts and send messages </h1>
             <form onSubmit={async ( event ) => {
                 event.preventDefault();
                 try {
@@ -33,27 +33,33 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
                     console.log(error)
                 }
             }}>
-                <label> Username </label>
-                <input
-                    className="loginInput"
-                    id="username"
-                    type="text"
-                    placeholder="username"
-                    value={username}
-                    onChange={(event) => {setUsername(event.target.value)}} 
-                />
+                <div>
+                    <label>Username </label>
+                    <input
+                        className="formLoginInput"
+                        id="username"
+                        type="text"
+                        placeholder="username"
+                        value={username}
+                        onChange={(event) => {setUsername(event.target.value)}} 
+                    />
+                </div>
+
+                <div className='passwordDiv'>
+                    <label> Password </label>
+                    <input 
+                        id="password"
+                        type="text"
+                        placeholder="password"
+                        value={password}
+                        onChange={(event) => {setPassword(event.target.value)}}
+                    />
+                </div>
+               
                 <br />
-                <label> Password </label>
-                <br />
-                <input 
-                    id="password"
-                    type="text"
-                    placeholder="password"
-                    value={password}
-                    onChange={(event) => {setPassword(event.target.value)}}
-                />
-                <br />
-                <button> Submit </button>
+                <div className="buttonContainer">
+                    <button className="homeButtonsL"> Submit </button>
+                </div>
             </form>
         </div>
         
