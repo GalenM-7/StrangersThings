@@ -6,8 +6,8 @@ const TopBarUser = ({loggedIn, currentUser}) => {
         return (
             <div className="topBar">
                 <div className="currentUserContainer">
-                    <p className="currentUser">{currentUser}</p>
-                    <button>Log Out</button>
+                    <p className="currentUser2">{currentUser}</p>
+                    <button className="logOutButton">Log Out</button>
                 </div>
             </div>
         )

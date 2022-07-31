@@ -53,14 +53,17 @@ const App = () => {
 
                 <Routes>
                  <Route path="/" element={<Homepage loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser.username } setCurrentUser = {setCurrentUser}/>} />
-                  <Route path="/posts" element={< Posts 
-                      posts = { posts } 
+                  <Route path="/posts" element={< Posts
                       loggedIn = { loggedIn } 
+                      setLoggedIn = {setLoggedIn}
+                      posts = { posts } 
                       setPosts = { setPosts }
-                      setFilteredPosts = { setFilteredPosts }
                       filteredPosts = { filteredPosts }
+                      setFilteredPosts = { setFilteredPosts }
                       filter = { filter }
-                      setFilter = { setFilter }/>} />
+                      setFilter = { setFilter }
+                      currentUser = { currentUser.username }
+                      setCurrentUser = {setCurrentUser}/>} />
                    <Route path="/profile" element={<Homepage loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}/>} />
                 </Routes>
               </BrowserRouter>
