@@ -6,23 +6,26 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
     const [ newPostToggle, setNewPostToggle ] = useState(false);
+    const [ updatePostToggle, setUpdatePostToggle ] = useState(false)
 
-    function togglePosts() {
+    function togglePostsCreate() {
 
-        
         if (newPostToggle === false) {
             setNewPostToggle(true)
         } else {
             setNewPostToggle(false)
         }
 
-        // if ( loggedIn === true && newPostToggle === false) {
-        //     setNewPostToggle(true)
-        // }
+    }
 
-        // if ( loggedIn === true && newPostToggle === true) {
-        //     setNewPostToggle(false)
-        // }
+        function togglePostsUpdate() {
+
+            if (updatePostToggle === false) {
+                setUpdatePostToggle(true)
+            } else {
+                setUpdatePostToggle(false)
+            }
+
     }
 
      function filterPosts() {
@@ -52,7 +55,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                 <div className="sectionHeader">
                     <h1 className="postsTitle">Posts</h1>
                     <div>
-                        <button className="togglePostButton" onClick={togglePosts}>Toggle Create Post</button>
+                        <button className="togglePostButton" onClick={togglePostsCreate}>Toggle Create Post</button>
                     </div>
                 </div>
                 
@@ -109,21 +112,26 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                         const checkUser = localStorage.getItem("token");
 
                                         if ( checkUser) {
-                                            try {
 
-                                                await fetch(`${url}/posts/${event.target.value}`, {
-                                                    method: "POST",
-                                                    headers: {
-                                                    'Content-Type': 'application/json',
-                                                    'Authorization': `Bearer ${checkUser}`
-                                                    },
-                                                    body: JSON.stringify({
-                                                    })
-                                                });
+                                            togglePostsUpdate()
 
-                                            } catch (error) {
-                                                console.log(error)
-                                            }
+                                            // try {
+
+                                            //     togglePostsUpdate()
+
+                                            //     await fetch(`${url}/posts/${event.target.value}`, {
+                                            //         method: "POST",
+                                            //         headers: {
+                                            //         'Content-Type': 'application/json',
+                                            //         'Authorization': `Bearer ${checkUser}`
+                                            //         },
+                                            //         body: JSON.stringify({
+                                            //         })
+                                            //     });
+
+                                            // } catch (error) {
+                                            //     console.log(error)
+                                            // }
                                         }
                                     
                                     }}>Edit A Post</button>
