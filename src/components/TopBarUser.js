@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 const TopBarUser = ({loggedIn, currentUser}) => {
-    if ( loggedIn === true) {
+
+    let checkForToken = localStorage.getItem("token");
+
+    if ( loggedIn === true || checkForToken) {
 
         return (
             <div className="topBar">

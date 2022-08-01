@@ -5,3 +5,4 @@ export { default as Messages } from "./Messages";
 export { default as Registration } from "./Registration";
 export { default as Homepage } from "./Homepage";
 export { default as TopBarUser } from "./TopBarUser";
+export { default as Profile } from "./Profile";

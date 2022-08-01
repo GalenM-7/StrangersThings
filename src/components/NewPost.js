@@ -9,31 +9,43 @@ const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilt
     const [ description, setDescription ] = useState("");
     const [ location, setLocation ] = useState("");
     const [ willDeliver, setWillDeliver ] = useState("");
-    const [ active, setActive ] = useState(true);
 
 
     return (
            <form className="createNewPostForm" onSubmit={async ( event ) => {
                 event.preventDefault();
-                let tokenFromLocal = localStorage.getItem(token);
+                let tokenFromLocal = localStorage.getItem("token");
+                let newPost = {
+                                title: title,
+                                description: description,
+                                price: price,
+                                willDeliver: willDeliver
+                            }
+
+                    if (location) {
+                        newPost.location = location
+                    }
+
                 try {
-                    const token = await fetch(`${url}/users/posts`, {
+                    const token = await fetch(`${url}/posts`, {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${tokenFromLocal}`
                         },
                         body: JSON.stringify({
-                            user: {
-                                username: username,
-                                password: password
-                            }
+                            post: newPost
                         })
                     });
                     console.log(token)
                     const tokenConverted = await token.json();
                     console.log(tokenConverted);
-                    window.alert(tokenConverted.data.message);
+                    const newPosts = await fetch(`${url}/posts`);
+                    const newPostsConverted = await newPosts.json();
+                    console.log("newPostsConverted");
+                    console.log(newPostsConverted.data);
+                    setPosts(newPostsConverted.data.posts);
+                    
                 } catch (error) {
                     console.log(error)
                 }
@@ -108,30 +120,6 @@ const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilt
                         placeholder="Will Deliver"
                         value={false}
                         onChange={(event) => {setWillDeliver(event.target.value)}} 
-                    />
-                </div>
-
-                <div className="createNewPostRows">
-                    <label className="createNewPostLabel">Active </label>
-                    <label className="createNewPostLabelTF">True </label>
-                    <input
-                        className="formLoginInput"
-                        id="active"
-                        type="radio"
-                        name="active"
-                        placeholder="active"
-                        value={true}
-                        onChange={(event) => {setActive(event.target.value)}} 
-                    />
-                    <label className="createNewPostLabelTF">False </label>
-                    <input
-                        className="formLoginInput"
-                        id="active"
-                        type="radio"
-                        name="active"
-                        placeholder="active"
-                        value={false}
-                        onChange={(event) => {setActive(event.target.value)}} 
                     />
                 </div>
                     <div className="buttonContainer">

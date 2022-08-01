@@ -9,13 +9,20 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
 
     function togglePosts() {
 
-        if ( loggedIn === true && newPostToggle === false) {
+        
+        if (newPostToggle === false) {
             setNewPostToggle(true)
-        }
-
-        if ( loggedIn === true && newPostToggle === true) {
+        } else {
             setNewPostToggle(false)
         }
+
+        // if ( loggedIn === true && newPostToggle === false) {
+        //     setNewPostToggle(true)
+        // }
+
+        // if ( loggedIn === true && newPostToggle === true) {
+        //     setNewPostToggle(false)
+        // }
     }
 
      function filterPosts() {
@@ -36,10 +43,8 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
             setFilter(false)
         }
         console.log("posts[0].author.username")
-        console.log(posts[0].author.username)
-      
+        console.log(posts[0].author.username) 
     }
-
 
     return (
         <div className="sectionBody">
@@ -79,7 +84,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                  
                 </form>
                     {
-                        loggedIn && newPostToggle
+                        newPostToggle
                         ? <NewPost
                             loggedIn = { loggedIn } 
                             setLoggedIn = {setLoggedIn}
@@ -89,7 +94,6 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                             setFilteredPosts = { setFilteredPosts }
                             filter = { filter }
                             setFilter = { setFilter }
-                            currentUser = { currentUser.username }
                             setCurrentUser = {setCurrentUser}/>
                         : null
                     }
@@ -100,7 +104,29 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                 <div className="postDetails"> 
                                 <h4>Location: {post.location}
                                 </h4><h4>posted by {post.author.username} </h4> 
-                                    <button className="editPostButton">Edit A Post</button>
+                                    <button value={post._id} className="editPostButton" onClick={ async (event) => {
+
+                                        const checkUser = localStorage.getItem("token");
+
+                                        if ( checkUser) {
+                                            try {
+
+                                                await fetch(`${url}/posts/${event.target.value}`, {
+                                                    method: "POST",
+                                                    headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'Authorization': `Bearer ${checkUser}`
+                                                    },
+                                                    body: JSON.stringify({
+                                                    })
+                                                });
+
+                                            } catch (error) {
+                                                console.log(error)
+                                            }
+                                        }
+                                    
+                                    }}>Edit A Post</button>
                                 </div>
                             </div>}) 
                         : posts.map( (post,idx) => { return <div className="postItem" key = {idx}>
@@ -108,7 +134,11 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                 <div className="postDetails"> 
                                     <h4>Location: {post.location} </h4>
                                     <h4>posted by {post.author.username} </h4>                                    
-                                    <button className="editPostButton">Edit This Post</button>
+                                    <button value={post._id} className="editPostButton" onClick={()=>{
+                                        window.alert("trig")
+                                        console.log("event.target.value");
+                                        console.log(event.target.value);
+                                    }}>Edit This Post</button>
                                 </div>
                                 </div>}) 
                     }
