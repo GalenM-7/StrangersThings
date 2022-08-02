@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser, singleUser, useSingleUser, buttonValue}) => {
+const UpdatePost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser, singleUser, useSingleUser, buttonValue}) => {
 
     let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
 
@@ -10,8 +10,33 @@ const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilt
     const [ location, setLocation ] = useState("");
     const [ willDeliver, setWillDeliver ] = useState("");
 
+    useEffect(() => {
+               const updateSetValues = () => {
+            // try {
+                // const result = await fetch(`${url}/posts`);
+                // console.log(result)
+                // const resultParsed = await result.json();
+                // const singlePost = resultParsed.filter( item => item._id === buttonValue);
+                const getInitialPost = posts.filter( item => item._id === buttonValue );
+                setTitle(getInitialPost[0].title);
+                setPrice(getInitialPost[0].price);
+                setDescription(getInitialPost[0].description);
+                setLocation(getInitialPost[0].location);
+                setWillDeliver(getInitialPost[0].willDeliver)
+            // } catch (error) {
+            //     console.log(error);
+            // }
+    }
+
+    updateSetValues()
+
+    }, [buttonValue])
+
+ 
+   
+
     return (
-           <form className="createNewPostForm" onSubmit={ async () => {
+           <form className="createNewPostForm" onSubmit={ async ( event ) => {
                 event.preventDefault();
                 let tokenFromLocal = localStorage.getItem("token");
                 let post = {
@@ -25,32 +50,30 @@ const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilt
                                     post.location = location
                                 }
 
-                            try {
-                                const token = await fetch(`${url}/posts`, {
-                                    method: "POST",
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${tokenFromLocal}`
-                                    },
-                                    body: JSON.stringify({
-                                        post: post
-                                    })
-                                });
-                                console.log(token)
-                                const tokenConverted = await token.json();
-                                console.log(tokenConverted);
-                                const fetchAgain = await fetch(`${url}/posts`);
-                                const fetchAgainConverted = await fetchAgain.json();
-                                console.log("fetchAgainConverted");
-                                console.log(fetchAgainConverted);
-                                setPosts(fetchAgainConverted.data.posts);
-                                
-                            } catch (error) {
-                                console.log(error)
-                            }
-                 }
-            }>
-                <h1>New Post</h1>
+                                try {
+                                    await fetch(`${url}/posts/${buttonValue}`, {
+                                        method: "PATCH",
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${tokenFromLocal}`
+                                        },
+                                        body: JSON.stringify({
+                                            post: post
+                                        })
+                                    });
+                                 
+                                    const fetchAgain = await fetch(`${url}/posts`);
+                                    const fetchAgainConverted = await fetchAgain.json();
+                                    console.log("fetchAgainConverted");
+                                    console.log(fetchAgainConverted);
+                                    setPosts(fetchAgainConverted.data.posts);
+
+                                } catch ( error ) {
+                                    console.log(error)
+                                }
+            }}>
+                <h1>Update Post</h1>
+
                 <div className="createNewPostRows">
                     <label className="createNewPostLabel">Title</label>
                     <input
@@ -130,4 +153,4 @@ const NewPost = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilt
     )
 }
 
-export default NewPost
+export default UpdatePost

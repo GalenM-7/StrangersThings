@@ -1,32 +1,65 @@
 import React, { useState } from 'react';
 import NewPost from './NewPost';
+import UpdatePost from './UpdatePost';
 
 const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser}) => {
 
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
+
+//Below is toggle state for new/update post, not passed to new/update post component
     const [ newPostToggle, setNewPostToggle ] = useState(false);
-    const [ updatePostToggle, setUpdatePostToggle ] = useState(false)
+    const [ updatePostToggle, setUpdatePostToggle ] = useState(false);
 
-    function togglePostsCreate() {
+// Below Only two pieces of state local to this component, passed to new post component
+    const [ singlePost, setSinglePost] = useState([]);
+    const [ useSinglePost, setUseSinglePost ] = useState(false);
+    const [ buttonValue, setButtonValue ] = useState("");
 
+
+    function toggleNewPost() {
         if (newPostToggle === false) {
-            setNewPostToggle(true)
+            setNewPostToggle(true);
+            setUpdatePostToggle(false);
+            // setUpdatePostToggle(false);
+            // setUseSinglePost(false);
         } else {
-            setNewPostToggle(false)
+            setNewPostToggle(false);
+            setUpdatePostToggle(false);        }
+    }
+
+    function toggleUpdatePost() {
+
+        if (updatePostToggle === false) {
+            setUpdatePostToggle(true);
+            setNewPostToggle(false);
+            setButtonValue(event.target.value)
+        } else if (updatePostToggle === true && buttonValue !== event.target.value) {
+            setButtonValue(event.target.value)
+            setNewPostToggle(false);
+        } else {
+            setNewPostToggle(false);
+            setUpdatePostToggle(false);
         }
 
     }
 
-        function togglePostsUpdate() {
+    //     function togglePostsUpdate() {
 
-            if (updatePostToggle === false) {
-                setUpdatePostToggle(true)
-            } else {
-                setUpdatePostToggle(false)
-            }
+    //         if (updatePostToggle === false) {
+    //             const checkUser = localStorage.getItem("token");
+    //             const filterSinglePost = posts.filter( item => item._id === checkUser);
+    //             if (filterSinglePost.length > 0) {
+    //                 setUpdateSinglePost(filterSinglePost)
+    //             }
+    //             setUpdatePostToggle(true);
+    //             setNewPostToggle(false);
+    //             setUseSinglePost(true);
+    //         } else {
+    //             setUpdatePostToggle(false)
+    //         }
 
-    }
+    // }
 
      function filterPosts() {
         let newPosts = false;
@@ -55,7 +88,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                 <div className="sectionHeader">
                     <h1 className="postsTitle">Posts</h1>
                     <div>
-                        <button className="togglePostButton" onClick={togglePostsCreate}>Toggle Create Post</button>
+                        <button value={"create"} className="togglePostButton" onClick={toggleNewPost}>Toggle Create Post</button>
                     </div>
                 </div>
                 
@@ -86,6 +119,24 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                     </div>
                  
                 </form>
+                   {
+                        updatePostToggle
+                        ? <UpdatePost
+                            loggedIn = { loggedIn } 
+                            setLoggedIn = {setLoggedIn}
+                            posts = { posts } 
+                            setPosts = { setPosts }
+                            filteredPosts = { filteredPosts }
+                            setFilteredPosts = { setFilteredPosts }
+                            filter = { filter }
+                            setFilter = { setFilter }
+                            setCurrentUser = {setCurrentUser}
+                            // singlePost = { updateSinglePost }
+                            useSinglePost = { useSinglePost }
+                            buttonValue = { buttonValue } 
+                            />
+                        : null
+                    }
                     {
                         newPostToggle
                         ? <NewPost
@@ -97,7 +148,11 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                             setFilteredPosts = { setFilteredPosts }
                             filter = { filter }
                             setFilter = { setFilter }
-                            setCurrentUser = {setCurrentUser}/>
+                            setCurrentUser = {setCurrentUser}
+                            // singlePost = { updateSinglePost }
+                            useSinglePost = { useSinglePost }
+                            buttonValue = { buttonValue } 
+                            />
                         : null
                     }
                     {
@@ -107,13 +162,13 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                 <div className="postDetails"> 
                                 <h4>Location: {post.location}
                                 </h4><h4>posted by {post.author.username} </h4> 
-                                    <button value={post._id} className="editPostButton" onClick={ async (event) => {
+                                    <button value={post._id} className="editPostButton" onClick={ async () => {
 
                                         const checkUser = localStorage.getItem("token");
 
                                         if ( checkUser) {
 
-                                            togglePostsUpdate()
+                                            toggleUpdatePost()
 
                                             // try {
 
@@ -143,9 +198,31 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                     <h4>Location: {post.location} </h4>
                                     <h4>posted by {post.author.username} </h4>                                    
                                     <button value={post._id} className="editPostButton" onClick={()=>{
-                                        window.alert("trig")
-                                        console.log("event.target.value");
-                                        console.log(event.target.value);
+                                        
+                                        const checkUser = localStorage.getItem("token");
+
+                                        if ( checkUser) {
+
+                                            toggleUpdatePost()
+
+                                            // try {
+
+                                            //     togglePostsUpdate()
+
+                                            //     await fetch(`${url}/posts/${event.target.value}`, {
+                                            //         method: "POST",
+                                            //         headers: {
+                                            //         'Content-Type': 'application/json',
+                                            //         'Authorization': `Bearer ${checkUser}`
+                                            //         },
+                                            //         body: JSON.stringify({
+                                            //         })
+                                            //     });
+
+                                            // } catch (error) {
+                                            //     console.log(error)
+                                            // }
+                                        }
                                     }}>Edit This Post</button>
                                 </div>
                                 </div>}) 
