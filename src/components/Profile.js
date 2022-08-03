@@ -49,7 +49,24 @@ const Profile = ({ loggedIn, getLoggedIn, currentUser, setCurrentUser }) => {
                 </div> 
             )
         } else {
-            
+          return(
+            <div className="sectionBody">
+            <div className="postsPanel">
+                <div className="sectionHeader">
+                    <h1 className="postsTitle">Profile</h1>
+                    <div>
+                        <button value={"sent"} className="togglePostButton">See Sent Messages</button>
+                        <button value={"recieved"} className="togglePostButton">See Received Messages</button>
+                    </div>
+                </div>
+                    <h1>Received Messages</h1>
+
+
+                    <h1>Sent Messages</h1>
+              </div>
+            </div>
+          )
+         
         }
     }
 

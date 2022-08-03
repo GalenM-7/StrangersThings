@@ -203,6 +203,7 @@ div.postDetails {
    display:flex;
    flex-direction:row;
    justify-content: space-evenly;
+   flex-basis: 100%;
 }
 
 div.sortContainer {
@@ -219,6 +220,14 @@ div.sortContainer {
 button.editPostButton {
    height: 3vw;
    margin-top:1vw;
+   background-color: blue;
+   color:white;
+}
+
+button.deletePostButton {
+   height: 3vw;
+   margin-top:1vw;
+   margin-left:1.5vw;
    background-color: blue;
    color:white;
 }
@@ -258,6 +267,14 @@ div.createNewPostRows {
    flex-direction: row;
    justify-content: center;
    margin-top: 1.5vw;
+}
+
+div.postButtons {
+   display:flex;
+   flex-basis: 100%;
+   flex-direction: row;
+   justify-content: center;
+   margin-bottom: 2.5vw;
 }
 
 label.createNewPostLabel {

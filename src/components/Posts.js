@@ -10,6 +10,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
 //Below is toggle state for new/update post, not passed to new/update post component
     const [ newPostToggle, setNewPostToggle ] = useState(false);
     const [ updatePostToggle, setUpdatePostToggle ] = useState(false);
+    const [ newMessage, newMessageToggle ] = useState(false);
 
 // Below Only two pieces of state local to this component, passed to new post component
     const [ singlePost, setSinglePost] = useState([]);
@@ -42,6 +43,15 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
             setUpdatePostToggle(false);
         }
 
+    }
+
+    function sendMessageToggle() {
+        if ( newMessage === false ) {
+            newMessageToggle(true);
+            setButtonValue(event.target.value)
+        } else {
+            newMessageToggle(false);
+        }
     }
 
     //     function togglePostsUpdate() {
@@ -169,63 +179,63 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                         if ( checkUser) {
 
                                             toggleUpdatePost()
-
-                                            // try {
-
-                                            //     togglePostsUpdate()
-
-                                            //     await fetch(`${url}/posts/${event.target.value}`, {
-                                            //         method: "POST",
-                                            //         headers: {
-                                            //         'Content-Type': 'application/json',
-                                            //         'Authorization': `Bearer ${checkUser}`
-                                            //         },
-                                            //         body: JSON.stringify({
-                                            //         })
-                                            //     });
-
-                                            // } catch (error) {
-                                            //     console.log(error)
-                                            // }
                                         }
                                     
                                     }}>Edit A Post</button>
                                 </div>
                             </div>}) 
-                        : posts.map( (post,idx) => { return <div className="postItem" key = {idx}>
+                        : posts.map( (post,idx) => { if ( currentUser === post.author.username) { return <div className="postItem" key = {idx}>
                             <h2>{post.title} | <span> Price: {post.price} </span></h2><h3>{post.description} </h3>
                                 <div className="postDetails"> 
                                     <h4>Location: {post.location} </h4>
-                                    <h4>posted by {post.author.username} </h4>                                    
-                                    <button value={post._id} className="editPostButton" onClick={()=>{
+                                    <h4>posted by {post.author.username} </h4>  
+                                    { post.willDeliver ? <h4>Will Deliver</h4> : <h4>Will Not Deliver</h4>} 
+                                </div> 
+                                <div className="postButtons">
+                                         <button value={post._id} className="editPostButton" onClick={()=>{
                                         
                                         const checkUser = localStorage.getItem("token");
 
                                         if ( checkUser) {
-
                                             toggleUpdatePost()
-
-                                            // try {
-
-                                            //     togglePostsUpdate()
-
-                                            //     await fetch(`${url}/posts/${event.target.value}`, {
-                                            //         method: "POST",
-                                            //         headers: {
-                                            //         'Content-Type': 'application/json',
-                                            //         'Authorization': `Bearer ${checkUser}`
-                                            //         },
-                                            //         body: JSON.stringify({
-                                            //         })
-                                            //     });
-
-                                            // } catch (error) {
-                                            //     console.log(error)
-                                            // }
                                         }
+                                        
                                     }}>Edit This Post</button>
+                                    <button value={post._id} className="deletePostButton" onClick={()=>{
+                                        
+                                        const checkUser = localStorage.getItem("token");
+
+                                        if ( checkUser) {
+                                            toggleUpdatePost()
+                                        }
+                                        
+                                    }}>Delete This Post</button>
+                                    </div>                                                                
+                                   
                                 </div>
-                                </div>}) 
+                                } else {
+                                    return <div className="postItem" key = {idx}>
+                                                <h2>{post.title} | <span> Price: {post.price} </span></h2><h3>{post.description} </h3>
+                                                    <div className="postDetails"> 
+                                                        <h4>Location: {post.location} </h4>
+                                                        <h4>posted by {post.author.username} </h4>
+                                                        { post.willDeliver ? <h4>Will Deliver</h4> : <h4>Will Not Deliver</h4>}                                    
+                                                    </div>
+                                                    <div className="postButtons">
+                                                            <button value={post._id} className="editPostButton" onClick={()=>{
+                                                            
+                                                            const checkUser = localStorage.getItem("token");
+
+                                                            if ( checkUser) {
+                                                                sendMessageToggle()
+                                                            }
+                                        
+                                                        }}>Send Message to Author</button>
+                                                    { newMessage && post._id === buttonValue ? <h4>Send Message</h4> : null}                                
+                                                    </div>
+                                            </div> 
+                                    }
+                                }) 
                     }
                   
             </div>
