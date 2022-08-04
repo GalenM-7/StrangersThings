@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const TopBarUser = ({loggedIn, currentUser}) => {
+const TopBarUser = ({setLoggedIn, loggedIn, currentUser}) => {
 
     let checkForToken = localStorage.getItem("token");
 
@@ -10,7 +10,13 @@ const TopBarUser = ({loggedIn, currentUser}) => {
             <div className="topBar">
                 <div className="currentUserContainer">
                     <p className="currentUser2">{currentUser}</p>
-                    <button className="logOutButton">Log Out</button>
+                    <button className="logOutButton" onClick = { () => {
+                        const check = localStorage.getItem("token");
+                        if (check) {
+                            localStorage.removeItem("token");
+                            setLoggedIn(false)
+                        }
+                    }}>Log Out</button>
                 </div>
             </div>
         )

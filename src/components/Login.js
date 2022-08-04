@@ -32,7 +32,8 @@ const Login = ({ loggedIn, currentUser, setLoggedIn, setCurrentUser }) => {
                                 const getUserConverted = await user.json();
                                 console.log("this is getUserConverted");
                                 console.log(getUserConverted);
-                                setCurrentUser({username: username, password: password});
+                                // setCurrentUser({username: username, password: password});
+                                setCurrentUser(username);
                                 setLoggedIn(true);
                                 setUsername("");
                                 setPassword("");

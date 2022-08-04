@@ -8,12 +8,12 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
 
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
-    const [ message, setMessage ] = useState("")
+    const [ newMessage, setNewMessage ] = useState("")
 
 //Below is toggle state for new/update post, not passed to new/update post component
     const [ newPostToggle, setNewPostToggle ] = useState(false);
     const [ updatePostToggle, setUpdatePostToggle ] = useState(false);
-    const [ newMessage, newMessageToggle ] = useState(false);
+    const [ newMessageToggle, setNewMessageToggle ] = useState(false);
 
 // Below Only two pieces of state local to this component, passed to new post component
     const [ singlePost, setSinglePost] = useState([]);
@@ -49,11 +49,11 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
     }
 
     function sendMessageToggle() {
-        if ( newMessage === false ) {
-            newMessageToggle(true);
+        if ( newMessageToggle === false ) {
+            setNewMessageToggle(true);
             setButtonValue(event.target.value)
         } else {
-            newMessageToggle(false);
+            setNewMessageToggle(false);
         }
     }
 
@@ -238,30 +238,30 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                         
                                                         }}>Send Message to Author</button>                                
                                                     </div>
-                                                      { newMessage && post._id === buttonValue ? 
+                                                      { newMessageToggle && post._id === buttonValue ? 
                                                     <div className="sendMessageForm">
                                                         <form onSubmit = { async () => {
                                                             event.preventDefault();
-                                                            const checkUser = localStorage.getItem("token");
+                                                            let tokenFromLocal = localStorage.getItem("token");
 
                                                             try {
-                                                                const newMessage = await fetch(`${url}/posts/${post._id}/messages`, {
+                                                                const result = await fetch(`${url}/posts/${post._id}/messages`, {
                                                                 method: "POST",
                                                                 headers: {
-                                                                    "Content-Type": "application/json",
-                                                                    "Authorization": `Bearer ${checkUser}`
+                                                                    'Content-Type': 'application/json',
+                                                                    'Authorization': `Bearer ${tokenFromLocal}`
                                                                 },
                                                                 body: JSON.stringify({
                                                                     message: {
-                                                                        content: { message }
+                                                                        content: newMessage 
                                                                     }
                                                                 })
                                                             });
                                                             window.alert("your message has been sent");
-                                                            setMessage("");
-                                                            newMessageToggle(false);
+                                                            setNewMessage("");
+                                                            setNewMessageToggle(false);
                                                             console.log("message");
-                                                            console.log(newMessage);
+                                                            console.log(result);
                                                             } catch (error) {
                                                                 console.log(error)
                                                             }
@@ -275,9 +275,9 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                                                     placeholder="your message"
                                                                     rows="3"
                                                                     cols="30"
-                                                                    value={message}
+                                                                    value={newMessage}
                                                                     onChange = {(event) => {
-                                                                        setMessage(event.target.value)
+                                                                        setNewMessage(event.target.value)
                                                                     }}
                                                                     >
                                                             </textarea>
