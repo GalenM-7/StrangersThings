@@ -232,6 +232,21 @@ button.deletePostButton {
    color:white;
 }
 
+button.sendMessageButton {
+   height: 3vw;
+   width: 60%;
+   margin-left:20%;
+   margin-right:20%;
+   margin-top: 10%;
+   margin-bottom:2vw;
+   background-color: blue;
+   color:white;
+}
+
+textarea.sendMessage {
+   margin-top:2vw;
+}
+
 button.togglePostButton {
    height: 3vw;
    margin-top:1.5vw;
@@ -270,6 +285,14 @@ div.createNewPostRows {
 }
 
 div.postButtons {
+   display:flex;
+   flex-basis: 100%;
+   flex-direction: row;
+   justify-content: center;
+   margin-bottom: 2.5vw;
+}
+
+div.sendMessageForm {
    display:flex;
    flex-basis: 100%;
    flex-direction: row;

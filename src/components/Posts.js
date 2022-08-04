@@ -4,8 +4,11 @@ import UpdatePost from './UpdatePost';
 
 const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser}) => {
 
+    let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
+
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
+    const [ message, setMessage ] = useState("")
 
 //Below is toggle state for new/update post, not passed to new/update post component
     const [ newPostToggle, setNewPostToggle ] = useState(false);
@@ -222,17 +225,70 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                                         { post.willDeliver ? <h4>Will Deliver</h4> : <h4>Will Not Deliver</h4>}                                    
                                                     </div>
                                                     <div className="postButtons">
-                                                            <button value={post._id} className="editPostButton" onClick={()=>{
+                                                        <button value={post._id} className="editPostButton" onClick={ () => {
                                                             
                                                             const checkUser = localStorage.getItem("token");
+                                                        
+                                                            console.log("checkUser ////////////////////////////////")
+                                                            console.log(checkUser)
 
                                                             if ( checkUser) {
                                                                 sendMessageToggle()
                                                             }
                                         
-                                                        }}>Send Message to Author</button>
-                                                    { newMessage && post._id === buttonValue ? <h4>Send Message</h4> : null}                                
+                                                        }}>Send Message to Author</button>                                
                                                     </div>
+                                                      { newMessage && post._id === buttonValue ? 
+                                                    <div className="sendMessageForm">
+                                                        <form onSubmit = { async () => {
+                                                            event.preventDefault();
+                                                            const checkUser = localStorage.getItem("token");
+
+                                                            try {
+                                                                const newMessage = await fetch(`${url}/posts/${post._id}/messages`, {
+                                                                method: "POST",
+                                                                headers: {
+                                                                    "Content-Type": "application/json",
+                                                                    "Authorization": `Bearer ${checkUser}`
+                                                                },
+                                                                body: JSON.stringify({
+                                                                    message: {
+                                                                        content: { message }
+                                                                    }
+                                                                })
+                                                            });
+                                                            window.alert("your message has been sent");
+                                                            setMessage("");
+                                                            newMessageToggle(false);
+                                                            console.log("message");
+                                                            console.log(newMessage);
+                                                            } catch (error) {
+                                                                console.log(error)
+                                                            }
+                                                          
+
+                                                        }}>
+                                                            <textarea
+                                                                    className="sendMessage"
+                                                                    id="message"
+                                                                    type="text"
+                                                                    placeholder="your message"
+                                                                    rows="3"
+                                                                    cols="30"
+                                                                    value={message}
+                                                                    onChange = {(event) => {
+                                                                        setMessage(event.target.value)
+                                                                    }}
+                                                                    >
+                                                            </textarea>
+                                                            <br />
+                                                            <button className="sendMessageButton">
+                                                                Send Message
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    : null}
+                                                    
                                             </div> 
                                     }
                                 }) 
