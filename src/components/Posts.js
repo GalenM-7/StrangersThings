@@ -1,10 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NewPost from './NewPost';
 import UpdatePost from './UpdatePost';
 
 const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser}) => {
 
     let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
+
+      const resetPosts = async () => {
+                try {
+                    const posts = await fetch(`${url}/posts`);
+                    const postsParsed = await posts.json();
+                    setPosts(postsParsed.data.posts);
+                    console.log("posts //////////////////");
+                    console.log(posts)
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+        const getPosts = async () => {
+                try {
+                    const posts = await fetch(`${url}/posts`);
+                    const postsParsed = await posts.json();
+                    return postsParsed.data.posts;
+                    console.log("posts //////////////////");
+                    console.log(posts)
+
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+
+
+    useEffect(() => {
+      
+        if ( !currentUser ) {
+            resetPosts()
+        }
+
+    }, [currentUser, posts])    
+
 
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
@@ -19,6 +55,23 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
     const [ singlePost, setSinglePost] = useState([]);
     const [ useSinglePost, setUseSinglePost ] = useState(false);
     const [ buttonValue, setButtonValue ] = useState("");
+
+    const checkUser = localStorage.getItem("token");
+
+   async function deletePost(postId) {
+        const result = await fetch(`${url}/posts/${postId}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${checkUser}`
+            }
+        })
+        const resultConverted = await result.json();
+                console.log("resultConverted ////////////////////////////////////////////")
+
+        console.log(resultConverted)
+    }
+
 
 
     function toggleNewPost() {
@@ -52,44 +105,32 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
         if ( newMessageToggle === false ) {
             setNewMessageToggle(true);
             setButtonValue(event.target.value)
-        } else {
+        } else if (newMessageToggle === true && buttonValue !== event.target.value) {
+            setButtonValue(event.target.value)
+            setNewPostToggle(false);
+        }else {
             setNewMessageToggle(false);
         }
     }
 
-    //     function togglePostsUpdate() {
-
-    //         if (updatePostToggle === false) {
-    //             const checkUser = localStorage.getItem("token");
-    //             const filterSinglePost = posts.filter( item => item._id === checkUser);
-    //             if (filterSinglePost.length > 0) {
-    //                 setUpdateSinglePost(filterSinglePost)
-    //             }
-    //             setUpdatePostToggle(true);
-    //             setNewPostToggle(false);
-    //             setUseSinglePost(true);
-    //         } else {
-    //             setUpdatePostToggle(false)
-    //         }
-
-    // }
 
      function filterPosts() {
         let newPosts = false;
         if ( author && !location) {
             newPosts = posts.filter( item => item.author.username === author );
-            setFilteredPosts(newPosts);
-            setFilter(true);
+            setPosts(newPosts);
+            // setFilter(true);
         } else if (!author && location) {
             newPosts = posts.filter( item => item.location === location );
-            setFilteredPosts(newPosts);
-            setFilter(true);
+            setPosts(newPosts);
+            // setFilter(true);
         } else if (author && location) {
             newPosts = posts.filter( item => item.location === location && item.author.username === author);
             setFilteredPosts(newPosts);
-            setFilter(true);
+            // setFilter(true);
         } else {
-            setFilter(false)
+            resetPosts()
+            // setFilter(false)
         }
         console.log("posts[0].author.username")
         console.log(posts[0].author.username) 
@@ -129,6 +170,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                             value={location}
                             onChange={(event) => {setLocation(event.target.value)}} />
                     <button className="editPostButton">Submit</button>
+                    {/* <button className="editPostButton">Submit</button> */}
                     </div>
                  
                 </form>
@@ -169,25 +211,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                         : null
                     }
                     {
-                        filter 
-                        ? filteredPosts.map( (post,idx) => { return <div className="postItem" key = {idx}>
-                            <h2>{post.title} Price: {post.price}</h2><h3>{post.description}</h3>
-                                <div className="postDetails"> 
-                                <h4>Location: {post.location}
-                                </h4><h4>posted by {post.author.username} </h4> 
-                                    <button value={post._id} className="editPostButton" onClick={ async () => {
-
-                                        const checkUser = localStorage.getItem("token");
-
-                                        if ( checkUser) {
-
-                                            toggleUpdatePost()
-                                        }
-                                    
-                                    }}>Edit A Post</button>
-                                </div>
-                            </div>}) 
-                        : posts.map( (post,idx) => { if ( currentUser === post.author.username) { return <div className="postItem" key = {idx}>
+                        posts.map( (post,idx) => { if ( currentUser === post.author.username) { return <div className="postItem" key = {idx}>
                             <h2>{post.title} | <span> Price: {post.price} </span></h2><h3>{post.description} </h3>
                                 <div className="postDetails"> 
                                     <h4>Location: {post.location} </h4>
@@ -204,15 +228,29 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                         }
                                         
                                     }}>Edit This Post</button>
-                                    <button value={post._id} className="deletePostButton" onClick={()=>{
-                                        
-                                        const checkUser = localStorage.getItem("token");
+                                    <button value={post._id} className="deletePostButton" onClick={ async (postId) => {
 
+                                        deletePost(event.target.value)
+
+                                        setButtonValue(event.target.value);
+                                        console.log("buttonValue");
+                                        console.log(buttonValue);
+                                        const checkUser = localStorage.getItem("token");
+                                        console.log("event.target.value");
+                                        console.log(event.target.value);
                                         if ( checkUser) {
-                                            toggleUpdatePost()
+
+                                                const postsFiltered = posts.filter( item => item._id !== buttonValue );
+                                                console.log("buttonValue")
+                                                console.log(buttonValue)                                                                                    
+                                                console.log("postsFiltered")
+                                                console.log(postsFiltered)
+                                                setPosts(postsFiltered)
+
                                         }
                                         
-                                    }}>Delete This Post</button>
+                                    }
+                                }>Delete This Post</button>
                                     </div>                                                                
                                    
                                 </div>
@@ -240,7 +278,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                                                     </div>
                                                       { newMessageToggle && post._id === buttonValue ? 
                                                     <div className="sendMessageForm">
-                                                        <form onSubmit = { async () => {
+                                                        <form onSubmit = { async (event) => {
                                                             event.preventDefault();
                                                             let tokenFromLocal = localStorage.getItem("token");
 

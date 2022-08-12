@@ -11,6 +11,7 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
         <div className="registrationContainer">
             <h1>Register Here to add posts and send messages </h1>
             <form onSubmit={async ( event ) => {
+                
                 event.preventDefault();
                 try {
                     const token = await fetch(`${url}/users/register`, {

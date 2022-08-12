@@ -34,6 +34,8 @@ const App = () => {
     getPosts()
   }, [])
 
+
+
 useEffect(() => {
     const checkUser = localStorage.getItem("token");
 
@@ -109,6 +111,8 @@ useEffect(() => {
                       setCurrentUser = {setCurrentUser}/>} />
                 </Routes>
               </BrowserRouter>
+            </section>
+
               
               {/* < Posts 
                   posts = { posts } 
@@ -139,7 +143,6 @@ useEffect(() => {
               
               } */}
           
-            </section>
            
             < Footer />
           </div>;

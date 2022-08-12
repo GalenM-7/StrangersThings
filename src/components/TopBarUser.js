@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TopBarUser = ({setLoggedIn, loggedIn, currentUser}) => {
+const TopBarUser = ({setLoggedIn, loggedIn, currentUser, setCurrentUser, setPosts}) => {
+
+let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
+
+
 
     let checkForToken = localStorage.getItem("token");
 
@@ -14,7 +18,7 @@ const TopBarUser = ({setLoggedIn, loggedIn, currentUser}) => {
                         const check = localStorage.getItem("token");
                         if (check) {
                             localStorage.removeItem("token");
-                            setLoggedIn(false)
+                            setCurrentUser("")
                         }
                     }}>Log Out</button>
                 </div>

@@ -126,7 +126,9 @@ const Profile = ({ loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFil
                   }) : null
                 }
                 {
-                  receivedMessagesToggle ? <div></div> : null
+                  receivedMessagesToggle ? receivedMessages.map((message, idx) => { 
+                    return <div className="postItem" key = {idx}><h1>{message.content}</h1><h2>Post Title: {message.post.title}</h2></div>
+                  }) : null
                 }
               </div>
             </div>
