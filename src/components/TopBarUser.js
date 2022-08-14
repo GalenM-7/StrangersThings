@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const TopBarUser = ({setLoggedIn, loggedIn, currentUser, setCurrentUser, setPosts}) => {
-
-let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
-
-
+const TopBarUser = ({loggedIn, currentUser, setCurrentUser}) => {
 
     let checkForToken = localStorage.getItem("token");
 

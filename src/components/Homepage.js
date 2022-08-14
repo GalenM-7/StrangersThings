@@ -6,11 +6,7 @@ const Homepage = ({ loggedIn, getLoggedIn, currentUser, setLoggedIn, setCurrentU
 
     return (
         <div className="homeContainer">
-                <Registration 
-                    loggedIn = { loggedIn } 
-                    setLoggedIn = { setLoggedIn }
-                    currentUser = { currentUser } 
-                    setCurrentUser = {setCurrentUser}/>
+                <Registration />
                 <Login 
                     loggedIn = { loggedIn } 
                     setLoggedIn = { setLoggedIn } 
