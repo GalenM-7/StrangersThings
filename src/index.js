@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 
-import { Login, Messages, Posts, Footer, Profile, Registration, Homepage, TopBarUser } from "./components";
+import { Footer, Login, Messages, Posts,  Profile, Registration, Homepage, TopBarUser } from "./components";
 import "./strangersStyles.css";
 
 const App = () => {
@@ -15,6 +15,7 @@ const App = () => {
   const [ currentUser, setCurrentUser ] = useState("");
   const [ loggedIn, setLoggedIn ] = useState(false);
   const [ isLoading, setIsLoading ] =  useState(false);
+
   let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b"
 
   useEffect(() => {
@@ -65,9 +66,7 @@ useEffect(() => {
     }
 })
   return <div>
-            {/* < Header loggedIn = { loggedIn } setLoggedIn = { setLoggedIn } currentUser = { currentUser } setCurrentUser = {setCurrentUser}></Header> */}
-           
-            
+                       
             <section className="mainSection">
            
               <BrowserRouter>
@@ -91,10 +90,6 @@ useEffect(() => {
                       setLoggedIn = {setLoggedIn}
                       posts = { posts } 
                       setPosts = { setPosts }
-                      filteredPosts = { filteredPosts }
-                      setFilteredPosts = { setFilteredPosts }
-                      filter = { filter }
-                      setFilter = { setFilter }
                       currentUser = { currentUser }
                       setCurrentUser = {setCurrentUser}/>} />
                    <Route path="/profile" element={
@@ -103,48 +98,12 @@ useEffect(() => {
                       setLoggedIn = {setLoggedIn}
                       posts = { posts } 
                       setPosts = { setPosts }
-                      filteredPosts = { filteredPosts }
-                      setFilteredPosts = { setFilteredPosts }
-                      filter = { filter }
-                      setFilter = { setFilter }
                       currentUser = { currentUser }
                       setCurrentUser = {setCurrentUser}/>} />
                 </Routes>
               </BrowserRouter>
             </section>
 
-              
-              {/* < Posts 
-                  posts = { posts } 
-                  loggedIn = { loggedIn } 
-                  setPosts = { setPosts }
-                  setFilteredPosts = { setFilteredPosts }
-                  filteredPosts = { filteredPosts }
-                  filter = { filter }
-                  setFilter = { setFilter }/>
-              {
-                loggedIn ? null : 
-                < Registration 
-                  loggedIn = { loggedIn } 
-                  setLoggedIn = { setLoggedIn } 
-                  currentUser = { currentUser } 
-                  setCurrentUser = {setCurrentUser}
-                  />
-              }
-              {
-                loggedIn ?   
-                < Messages 
-                  loggedIn = { loggedIn } 
-                  setLoggedIn = { setLoggedIn } 
-                  currentUser = { currentUser } 
-                  setCurrentUser = {setCurrentUser}
-                  /> 
-                  : null 
-              
-              } */}
-          
-           
-            < Footer />
           </div>;
 };
 

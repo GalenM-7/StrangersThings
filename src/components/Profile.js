@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Profile = ({ loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilteredPosts, filter, setFilter, currentUser, setCurrentUser }) => {
+const Profile = ({ loggedIn, setLoggedIn, posts, setPosts, currentUser, setCurrentUser }) => {
 
     let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
 
@@ -36,20 +36,6 @@ const Profile = ({ loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFil
     if (checkUser) {
       console.log(checkUser)
       getCurrentUser();
-    }
-
-    async function getSentMessages() {
-      try {
-        const result = await fetch(`${url}/posts`);
-        console.log(result)
-        const resultParsed = await result.json();
-        console.log(resultParsed.data.posts);
-        setPosts(resultParsed.data.posts);
-        console.log("result.data.posts.id")
-        console.log(resultParsed.data.posts[0]._id);
-      } catch (error) {
-        console.log(error);
-      }
     }
 
     function getProfile(){

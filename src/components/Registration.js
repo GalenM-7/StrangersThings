@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
+const Registration = () => {
 
      let url = "https://strangers-things.herokuapp.com/api/2206-ftb-et-web-ft-b";
 
@@ -11,7 +11,6 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
         <div className="registrationContainer">
             <h1>Register Here to add posts and send messages </h1>
             <form onSubmit={async ( event ) => {
-                
                 event.preventDefault();
                 try {
                     const token = await fetch(`${url}/users/register`, {
@@ -26,9 +25,7 @@ const Registration = ({ loggedIn, getLoggedIn, currentUser }) => {
                             }
                         })
                     });
-                    console.log(token)
                     const tokenConverted = await token.json();
-                    console.log(tokenConverted);
                     window.alert(tokenConverted.data.message);
                 } catch (error) {
                     console.log(error)

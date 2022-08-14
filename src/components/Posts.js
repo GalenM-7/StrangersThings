@@ -34,13 +34,13 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
 
 
     useEffect(() => {
+        window.alert("activated")
       
         if ( !currentUser ) {
             resetPosts()
         }
 
-    }, [currentUser, posts])    
-
+    }, [currentUser])      
 
     const [ author, setAuthor ] = useState("");
     const [ location, setLocation ] = useState("");
@@ -67,9 +67,7 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
             }
         })
         const resultConverted = await result.json();
-                console.log("resultConverted ////////////////////////////////////////////")
-
-        console.log(resultConverted)
+        return resultConverted
     }
 
 
@@ -181,10 +179,6 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                             setLoggedIn = {setLoggedIn}
                             posts = { posts } 
                             setPosts = { setPosts }
-                            filteredPosts = { filteredPosts }
-                            setFilteredPosts = { setFilteredPosts }
-                            filter = { filter }
-                            setFilter = { setFilter }
                             setCurrentUser = {setCurrentUser}
                             // singlePost = { updateSinglePost }
                             useSinglePost = { useSinglePost }
@@ -199,10 +193,6 @@ const Posts = ({loggedIn, setLoggedIn, posts, setPosts, filteredPosts, setFilter
                             setLoggedIn = {setLoggedIn}
                             posts = { posts } 
                             setPosts = { setPosts }
-                            filteredPosts = { filteredPosts }
-                            setFilteredPosts = { setFilteredPosts }
-                            filter = { filter }
-                            setFilter = { setFilter }
                             setCurrentUser = {setCurrentUser}
                             // singlePost = { updateSinglePost }
                             useSinglePost = { useSinglePost }
